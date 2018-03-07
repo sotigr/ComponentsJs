@@ -126,8 +126,6 @@ class ComponentBase {
         }
         this.existingElementRenderMode="append";
         this.existingElementTatget = this.body;
-        //$(this.body).css("opacity","0");
-        //$(this.body).animate({"opacity": "1"}, 1000);
     }
     Loaded(){};
     DisableSelect()
@@ -141,19 +139,21 @@ class ComponentBase {
         $(this.body).append(template);
         let Instance = this;
         $(this.body).find('[eid]').each(function(){
-            Instance[this.getAttribute("eid")] = this; 
-        });
-        $(this.body).find('[cid]').each(function(){
-            var component = ComponentBindings.Render({target: this});
-            Instance.components[this.getAttribute("cid")] = component;
-            Instance[this.getAttribute("cid")] = component;
+            if (this.tagName == "component"){
+                var component = ComponentBindings.Render({target: this});
+                Instance.components[this.getAttribute("eid")] = component;
+                Instance[this.getAttribute("eid")] = component;
+            }
+            else{
+                Instance[this.getAttribute("eid")] = this;
+            }
         });
     }  
     Element(eid) {
         return $(this.body).find('[eid="' + eid + '"]')[0];
     }
     HideElement(eid) {
-        this._original_display_state[eid] =  this.Element(eid).style.display;
+        this._original_display_state[eid] = this.Element(eid).style.display;
         this.Element(eid).style.display = "none";
     }
     ShowElement(eid) {
