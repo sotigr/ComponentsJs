@@ -7,8 +7,6 @@ ComponentsJS is a tool that makes it easier to create custom HTML Elements with 
 
 Linking the scripts:
 ```html
-<!--Jquery is required-->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="components-base.js" type="text/javascript"></script>
 ```
 
