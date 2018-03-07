@@ -5,11 +5,14 @@ class Example extends ComponentBase
         super(attrs);
         this.Register(`
             <div>Component example</div>
-            <div eid="mylabel"></div>
+            <div eid="mylabel"></div> 
         `);
+    }
+    Loaded()
+    {
         this.mylabel.innerHTML = "example label";
     }
 }
-document.addEventListener("RegisterCustomElements", function () { 
+document.addEventListener("RegisterComponents", function () { 
     ComponentBindings.BindToElement("Example", Example);
 });

@@ -72,11 +72,11 @@ var keyframes_and_styles = `
 try{
     $(document.head).prepend(keyframes_and_styles);
 }catch (ex){
-    console.log("Failed to load component triggers");
-} 
+    console.error("Failed to load component triggers");
+}
 var _component_type_list = [];
 var _component_object_list = []; 
-
+var _component_style_list = [];
 class ComponentBindings{
     static BindToElement(elementtype, componentClass)
     { 
@@ -110,14 +110,26 @@ class ComponentBindings{
             $(e.target).replaceWith(obj.body);
             obj.Loaded();
             return obj;
-        } 
+        }
         return null;
     }
 }
-
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
 function getComponentById (compid){
     return _component_object_list[compid];
 }; 
+if (typeof HTMLDocument !== 'undefined') {
+    HTMLDocument.prototype.getComponentById = function(compid){
+        return getComponentById (compid);
+    };
+} else {
+    Document.prototype.getComponentById = function(compid){
+        return getComponentById (compid);
+    };
+}
 
 class ComponentBase {
     constructor(attrs) {
@@ -130,9 +142,13 @@ class ComponentBase {
             {
                 this.body.setAttribute(attrs[i].name, attrs[i].value);
             } 
-        }
+        } 
         this.existingElementRenderMode="append";
         this.existingElementTatget = this.body;
+        if (attrs==undefined)
+        {
+            this.Loaded();
+        }
     }
     Loaded(){};
     DisableSelect()
@@ -142,22 +158,32 @@ class ComponentBase {
         this.body.style.webkitUserSelect = "none";
     }
     Register(template)
-    {
+    {  
         $(this.body).append(template);
+        if ($(this.body).children('component[type="'+this.body.getAttribute("type")+'"]').length>0)
+        {
+            console.error("Recursive components detected in template (component: "+this.body.getAttribute("type")+"). Please remove these components");
+            $(this.body).children('component[type="'+this.body.getAttribute("type")+'"]').remove();
+        }
         let Instance = this;
         $(this.body).find('[eid]').each(function(){
-            if (this.tagName == "component"){
+            if (this.tagName == "component"){  
                 var component = ComponentBindings.Render({target: this});
                 Instance.components[this.getAttribute("eid")] = component;
-                Instance[this.getAttribute("eid")] = component;
+                Instance[this.getAttribute("eid")] = component; 
             }
             else{
                 Instance[this.getAttribute("eid")] = this;
             }
         });
-    }  
-    Element(eid) {
-        return $(this.body).find('[eid="' + eid + '"]')[0];
+    }
+    Styles(styles){
+        if (_component_style_list[this.body.getAttribute("type")]==undefined)
+        {
+            styles = styles.replaceAll(".", 'div[type="'+this.body.getAttribute("type")+'"] .');
+            _component_style_list[this.body.getAttribute("type")] = styles;
+            $(document.head).append("<style>"+styles+"</style>");
+        }
     }
     HideElement(eid) {
         this._original_display_state[eid] = this.Element(eid).style.display;
@@ -173,7 +199,7 @@ class ComponentBase {
 }
 try{
     $(window).ready(function(){
-        document.dispatchEvent(new Event("RegisterCustomElements")); 
+        document.dispatchEvent(new Event("RegisterComponents")); 
     
         document.addEventListener('animationstart', ComponentBindings.Render , true);
         document.addEventListener('MSAnimationStart', ComponentBindings.Render, true);
@@ -182,6 +208,6 @@ try{
         document.dispatchEvent(new Event("ComponentsReady"));
     }); 
 }catch (ex){
-    console.log("Components failed to initialize please make sure all the dependecies are satisfied");
+    console.error("Components failed to initialize please make sure all the dependecies are satisfied");
 }
 
