@@ -11,6 +11,15 @@ class StyledInternal extends ComponentBase
                 color:red!important;
             }
         `);
+        let inst = this;
+        setTimeout(function() {
+            inst.UpdateStyles(`
+                .hello{
+                    color:blue!important;
+                }
+            `);
+        }, 3000);
+     
     }
     Loaded()
     {

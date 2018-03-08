@@ -181,8 +181,18 @@ class ComponentBase {
         if (_component_style_list[this.body.getAttribute("type")]==undefined)
         {
             styles = styles.replaceAll(".", 'div[type="'+this.body.getAttribute("type")+'"] .');
-            _component_style_list[this.body.getAttribute("type")] = styles;
-            $(document.head).append("<style>"+styles+"</style>");
+            let style_node = document.createElement("style");
+            $(style_node).html(styles);
+            _component_style_list[this.body.getAttribute("type")] = style_node; 
+            $(document.head).append(style_node);
+        }
+    }
+    UpdateStyles(styles){
+        if (_component_style_list[this.body.getAttribute("type")]!=undefined)
+        {
+            styles = styles.replaceAll(".", 'div[type="'+this.body.getAttribute("type")+'"] .');
+            let style_node = _component_style_list[this.body.getAttribute("type")]
+            $(style_node).html(styles);
         }
     }
     HideElement(eid) {
