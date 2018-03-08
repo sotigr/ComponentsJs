@@ -166,8 +166,8 @@ class ComponentBase {
             $(this.body).children('component[type="'+this.body.getAttribute("type")+'"]').remove();
         }
         let Instance = this;
-        $(this.body).find('[eid]').each(function(){
-            if (this.tagName == "component"){  
+        $(this.body).find('[eid]').each(function(){  
+            if (this.tagName.toLowerCase() == "component"){ 
                 var component = ComponentBindings.Render({target: this});
                 Instance.components[this.getAttribute("eid")] = component;
                 Instance[this.getAttribute("eid")] = component; 
@@ -196,11 +196,11 @@ class ComponentBase {
         }
     }
     HideElement(eid) {
-        this._original_display_state[eid] = this.Element(eid).style.display;
-        this.Element(eid).style.display = "none";
+        this._original_display_state[eid] = this[eid].style.display;
+        this[eid].style.display = "none";
     }
     ShowElement(eid) {
-        this.Element(eid).style.display = this._original_display_state[eid];
+        this[eid].style.display = this._original_display_state[eid];
     }
     Destroy()
     {
@@ -220,4 +220,3 @@ try{
 }catch (ex){
     console.error("Components failed to initialize please make sure all the dependecies are satisfied");
 }
-
