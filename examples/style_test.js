@@ -7,14 +7,14 @@ class StyledInternal extends ComponentBase
         <div eid="mylabel"></div>
         `);
         this.Styles(`
-            .hello{
+            class hello{
                 color:red!important;
             }
         `);
         let inst = this;
         setTimeout(function() {
             inst.UpdateStyles(`
-                .hello{
+                class hello{
                     color:blue!important;
                 }
             `);

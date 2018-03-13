@@ -114,10 +114,12 @@ class ComponentBindings{
         return null;
     }
 }
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
-};
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 function getComponentById (compid){
     return _component_object_list[compid];
 }; 
@@ -179,8 +181,9 @@ class ComponentBase {
     }
     Styles(styles){
         if (_component_style_list[this.body.getAttribute("type")]==undefined)
-        {
-            styles = styles.replaceAll(".", 'div[type="'+this.body.getAttribute("type")+'"] .');
+        { 
+            styles = replaceAll(styles,"class ", 'div[type="'+this.body.getAttribute("type")+'"] .');
+ 
             let style_node = document.createElement("style");
             $(style_node).html(styles);
             _component_style_list[this.body.getAttribute("type")] = style_node; 
@@ -190,7 +193,7 @@ class ComponentBase {
     UpdateStyles(styles){
         if (_component_style_list[this.body.getAttribute("type")]!=undefined)
         {
-            styles = styles.replaceAll(".", 'div[type="'+this.body.getAttribute("type")+'"] .');
+            styles = replaceAll(styles,"class ", 'div[type="'+this.body.getAttribute("type")+'"] .');
             let style_node = _component_style_list[this.body.getAttribute("type")]
             $(style_node).html(styles);
         }
