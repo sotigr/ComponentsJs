@@ -227,6 +227,7 @@ class ComponentBase {
 }
 try{
     $(window).ready(function(){
+        document.dispatchEvent(new Event("RegisterComponentVariables")); 
         document.dispatchEvent(new Event("RegisterComponents")); 
     
         document.addEventListener('animationstart', ComponentBindings.Render , true);
