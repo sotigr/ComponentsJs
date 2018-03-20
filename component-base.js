@@ -77,6 +77,7 @@ try{
 var _component_type_list = [];
 var _component_object_list = []; 
 var _component_style_list = [];
+var _component_style_variable_list = {};
 class ComponentBindings{
     static BindToElement(elementtype, componentClass)
     { 
@@ -152,6 +153,13 @@ class ComponentBase {
             this.Loaded();
         }
     }
+    static StyleVariable(name, value)
+    {
+        _component_style_variable_list["~"+name] = value;
+    }
+    static GetStyleVariable(name){
+        return _component_style_variable_list["~"+name];
+    }
     Loaded(){};
     DisableSelect()
     {
@@ -183,7 +191,10 @@ class ComponentBase {
         if (_component_style_list[this.body.getAttribute("type")]==undefined)
         { 
             styles = replaceAll(styles,"class ", 'div[type="'+this.body.getAttribute("type")+'"] .');
- 
+            $.each(_component_style_variable_list, function(key,value){
+                styles = replaceAll(styles,key,value);
+            });
+
             let style_node = document.createElement("style");
             $(style_node).html(styles);
             _component_style_list[this.body.getAttribute("type")] = style_node; 
@@ -194,6 +205,10 @@ class ComponentBase {
         if (_component_style_list[this.body.getAttribute("type")]!=undefined)
         {
             styles = replaceAll(styles,"class ", 'div[type="'+this.body.getAttribute("type")+'"] .');
+            $.each(_component_style_variable_list, function(key,value){
+                styles = replaceAll(styles,key,value);
+            });
+
             let style_node = _component_style_list[this.body.getAttribute("type")]
             $(style_node).html(styles);
         }

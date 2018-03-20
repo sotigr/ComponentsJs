@@ -1,3 +1,4 @@
+ComponentBase.StyleVariable("mycolor", "#aaa");
 class StyledInternal extends ComponentBase
 {
     constructor(attrs){
@@ -15,7 +16,7 @@ class StyledInternal extends ComponentBase
         setTimeout(function() {
             inst.UpdateStyles(`
                 class hello{
-                    color:blue!important;
+                    color:~mycolor!important;
                 }
             `);
         }, 3000);
