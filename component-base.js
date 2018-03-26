@@ -220,6 +220,10 @@ class ComponentBase {
     ShowElement(eid) {
         this[eid].style.display = this._original_display_state[eid];
     }
+    Attr(name)
+    {
+        return this.body.getAttribute(name);
+    }
     Destroy()
     {
         $(this.body).remove();    
