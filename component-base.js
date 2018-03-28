@@ -226,8 +226,7 @@ class ComponentBase {
     }
     ShowElement(eid) {
         this[eid].style.display = this._original_display_state[eid];
-    }
-<<<<<<< HEAD
+    } 
     set Enabled(value)
     { 
         if (value == false)
@@ -245,12 +244,11 @@ class ComponentBase {
     }
     get Enabled()
     {
-        return this._enabled;
-=======
+        return this._enabled; 
+    }
     Attr(name)
     {
-        return this.body.getAttribute(name);
->>>>>>> master
+        return this.body.getAttribute(name); 
     }
     Destroy()
     {
