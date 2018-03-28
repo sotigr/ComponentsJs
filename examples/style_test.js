@@ -1,4 +1,3 @@
-ComponentBase.StyleVariable("mycolor", "#aaa");
 class StyledInternal extends ComponentBase
 {
     constructor(attrs){
@@ -28,4 +27,7 @@ class StyledInternal extends ComponentBase
 }
 document.addEventListener("RegisterComponents", function () { 
     ComponentBindings.BindToElement("StyledInternal", StyledInternal);
+});
+document.addEventListener("RegisterComponentVariables", function () { 
+    ComponentBase.StyleVariable("mycolor", "#aaa");
 });

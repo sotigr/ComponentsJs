@@ -227,6 +227,7 @@ class ComponentBase {
     ShowElement(eid) {
         this[eid].style.display = this._original_display_state[eid];
     }
+<<<<<<< HEAD
     set Enabled(value)
     { 
         if (value == false)
@@ -245,6 +246,11 @@ class ComponentBase {
     get Enabled()
     {
         return this._enabled;
+=======
+    Attr(name)
+    {
+        return this.body.getAttribute(name);
+>>>>>>> master
     }
     Destroy()
     {
@@ -253,6 +259,7 @@ class ComponentBase {
 }
 try{
     $(window).ready(function(){
+        document.dispatchEvent(new Event("RegisterComponentVariables")); 
         document.dispatchEvent(new Event("RegisterComponents")); 
     
         document.addEventListener('animationstart', ComponentBindings.Render , true);
