@@ -4,7 +4,7 @@
         <meta charset="UTF-8"> 
         <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../component-base.min.js"></script>
+        <script src="../component-base.js"></script>
         <script src="style_test.js"></script>
     </head> 
     <body>
@@ -15,6 +15,14 @@
         </style>
         <component type="StyledInternal"></component>
         <component type="StyledInternal"></component>
+        <component id="test" type="StyledInternal"></component>
+
         <p class="hello">This also uses the hello class but there is no conflict</p>
+
+        <script>
+            document.addEventListener("ComponentsReady",function(){
+                document.getComponentById("test").Enabled = false;
+            });
+        </script>
     </body>
 </html>

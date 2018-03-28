@@ -17,10 +17,9 @@ class StyledInternal extends ComponentBase
             inst.UpdateStyles(`
                 class hello{
                     color:~mycolor!important;
-                }
+                } 
             `);
-        }, 3000);
-     
+        }, 3000); 
     }
     Loaded()
     {

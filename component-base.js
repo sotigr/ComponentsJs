@@ -137,6 +137,7 @@ if (typeof HTMLDocument !== 'undefined') {
 class ComponentBase {
     constructor(attrs) {
         this.body = document.createElement("div");
+        this._enabled=true;
         this._original_display_state = [];
         this.components = [];
         if (attrs!=undefined)
@@ -166,6 +167,12 @@ class ComponentBase {
         this.body.style.userSelect = "none";
         this.body.style.msUserSelect = "none";
         this.body.style.webkitUserSelect = "none";
+    }
+    EnableSelect()
+    {
+        this.body.style.userSelect = "unset";
+        this.body.style.msUserSelect = "unset";
+        this.body.style.webkitUserSelect = "unset";
     }
     Register(template)
     {  
@@ -220,6 +227,25 @@ class ComponentBase {
     ShowElement(eid) {
         this[eid].style.display = this._original_display_state[eid];
     }
+    set Enabled(value)
+    { 
+        if (value == false)
+        {
+            this.body.style.pointerEvents = "none";
+            this.body.style.opacity=".3"; 
+            this._enabled=false;
+        }
+        else
+        {
+            this.body.style.pointerEvents = "unset";
+            this.body.style.opacity="unset"; 
+            this._enabled=true;
+        }
+    }
+    get Enabled()
+    {
+        return this._enabled;
+    }
     Destroy()
     {
         $(this.body).remove();    
@@ -232,7 +258,9 @@ try{
         document.addEventListener('animationstart', ComponentBindings.Render , true);
         document.addEventListener('MSAnimationStart', ComponentBindings.Render, true);
         document.addEventListener('webkitAnimationStart', ComponentBindings.Render, true);
+
         console.log("Components Initalized");
+        
         document.dispatchEvent(new Event("ComponentsReady"));
     }); 
 }catch (ex){
