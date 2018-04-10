@@ -88,6 +88,8 @@ class ComponentBindings{
     }
     static Render(e)
     { 
+        if (e.target.tagName.toLowerCase()!="component")
+            return null;
         let element_type = e.target.getAttribute("type");   
         let cls = _component_type_list[element_type];
         if (cls!=undefined){
